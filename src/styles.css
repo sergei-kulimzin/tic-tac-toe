@@ -1,0 +1,24 @@
+:root {
+  --light: #ffffff;
+  --light-dark: #838383;
+  --dark: #323030;
+  --primary: #792EF6;
+  --accent: #a62ef6;
+  --warning: #fdef9b;
+  --error: #E7757E;
+  --gap-sm: 1rem;
+  --gap-lg: 2rem;
+  --radius: 0.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  padding: var(--gap-sm);
+}
