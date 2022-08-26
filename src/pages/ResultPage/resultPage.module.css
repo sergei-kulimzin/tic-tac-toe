@@ -1,0 +1,22 @@
+.resultPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: var(--gap-lg) 0;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.link {
+  color: black;
+}
+
+.link:first-of-type {
+  margin-right: var(--gap-lg);
+}
