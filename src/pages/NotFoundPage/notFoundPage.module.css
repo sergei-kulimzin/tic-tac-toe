@@ -1,0 +1,20 @@
+.notFoundPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: var(--gap-lg) 0;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.link {
+  display: block;
+  text-align: center;
+  color: black;
+}
