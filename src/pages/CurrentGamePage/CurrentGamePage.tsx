@@ -7,12 +7,8 @@ import GameBoard from '../../components/GameBoard/GameBoard';
 
 function CurrentGamePage(): JSX.Element {
   const currentBoard = useAppSelector(selectCurrentBoard);
-  const isBoardHaveEmptyCells = useAppSelector(selectIsBoardHaveEmptyCells);
   const winner = useAppSelector(selectWinner);
-
-  if (!currentBoard.length) {
-    return <Navigate to='/' />;
-  }
+  const isBoardHaveEmptyCells = useAppSelector(selectIsBoardHaveEmptyCells);
 
   if (winner || !isBoardHaveEmptyCells) {
     return <Navigate to='/result' />;

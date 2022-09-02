@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '..';
 import { CellValue } from '../../const';
 import { CellData, Row } from '../../types';
-import { calculateWinner } from '../../utils/calculateWinner';
+import { checkIsWinCellsAmountReached } from '../../utils/checkIsWinCellsAmountReached';
 import { checkIsBoardHaveEmptyCells } from '../../utils/checkIsBoardHaveEmptyCells';
 import { clearBoard } from '../../utils/clearBoard';
 
@@ -80,10 +80,12 @@ export const selectIsGameStarted = (state: AppState) => state.currentGame.isGame
 export const selectIsFirstPlayerStep = (state: AppState) => state.currentGame.isFirstPlayerStep;
 export const selectChoosenCell = (state: AppState) => state.currentGame.choosenCell;
 export const selectIsBoardHaveEmptyCells = (state: AppState) => checkIsBoardHaveEmptyCells(state.currentGame.board);
-export const selectWinner = (state: AppState): string | false => {
-  const { amountToWin, choosenCell, board, isFirstPlayerStep, players, isGameStarted } = state.currentGame;
-  if (board.length && isGameStarted && calculateWinner(amountToWin, choosenCell, board)) {
+export const selectWinner = (state: AppState) => {
+  const { amountToWin, board, choosenCell, isFirstPlayerStep, players } = state.currentGame;
+
+  if (checkIsWinCellsAmountReached(amountToWin, board, choosenCell)) {
     return isFirstPlayerStep ? players[0] : players[1];
   }
-  return false;
+
+  return null;
 };
