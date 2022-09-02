@@ -1,11 +1,11 @@
 import { CellValue } from '../const';
-import { CellType } from '../types';
+import { Row } from '../types';
 
-export const createBoardBySize = (size: number): Array<CellType[]> => {
-  const matrix: Array<CellType[]> = [];
+export const createBoardBySize = (size: number): Row[] => {
+  const matrix: Row[] = [];
 
   for (let i = 0; i < size; i++) {
-    const row: CellType[] = [];
+    const row: Row = [];
 
     for (let j = 0; j < size; j++) {
       row.push({
@@ -13,7 +13,7 @@ export const createBoardBySize = (size: number): Array<CellType[]> => {
           y: i,
           x: j,
         },
-        value: CellValue.Idle,
+        value: CellValue.IDLE,
       });
     }
 

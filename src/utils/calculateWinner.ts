@@ -1,19 +1,19 @@
-import { CellType } from '../types';
+import { CellData, Row } from '../types';
 
-const removeUndefinedItems = (cell: CellType, partBefore: CellType[], partAfter: CellType[]) => {
-  return [...partBefore, cell, ...partAfter].reduce((result, cell): CellType[] => {
+const removeUndefinedItems = (cell: CellData, partBefore: Row, partAfter: Row) => {
+  return [...partBefore, cell, ...partAfter].reduce((result, cell): Row => {
     if (cell !== undefined) {
       return [...result, cell];
     }
     return result;
-  }, [] as CellType[]);
+  }, [] as Row);
 };
 
-const getRowPart = (amountToWin: number, cell: CellType, board: Array<CellType[]>) => {
+const getRowPart = (amountToWin: number, cell: CellData, board: Row[]) => {
   const { x, y } = cell.coordinates;
 
-  const rowPartBeforeCell: CellType[] = [];
-  const rowPartAfterCell: CellType[] = [];
+  const rowPartBeforeCell: Row = [];
+  const rowPartAfterCell: Row = [];
 
   for (let i = 1; i <= amountToWin - 1; i++) {
     rowPartBeforeCell.push(board[y][x - i]);
@@ -23,11 +23,11 @@ const getRowPart = (amountToWin: number, cell: CellType, board: Array<CellType[]
   return removeUndefinedItems(cell, rowPartBeforeCell, rowPartAfterCell);
 };
 
-const getColumnPart = (amountToWin: number, cell: CellType, board: Array<CellType[]>) => {
+const getColumnPart = (amountToWin: number, cell: CellData, board: Row[]) => {
   const { x, y } = cell.coordinates;
 
-  const columnPartBeforeCell: CellType[] = [];
-  const columnPartAfterCell: CellType[] = [];
+  const columnPartBeforeCell: Row = [];
+  const columnPartAfterCell: Row = [];
 
   for (let i = 1; i <= amountToWin - 1; i++) {
     if (board[y - i]) {
@@ -41,11 +41,11 @@ const getColumnPart = (amountToWin: number, cell: CellType, board: Array<CellTyp
   return removeUndefinedItems(cell, columnPartBeforeCell, columnPartAfterCell);
 };
 
-const getFirstDiagonalPart = (amountToWin: number, cell: CellType, board: Array<CellType[]>) => {
+const getFirstDiagonalPart = (amountToWin: number, cell: CellData, board: Row[]) => {
   const { x, y } = cell.coordinates;
 
-  const diagonalPartBeforeCell: CellType[] = [];
-  const diagonalPartAfterCell: CellType[] = [];
+  const diagonalPartBeforeCell: Row = [];
+  const diagonalPartAfterCell: Row = [];
 
   for (let i = 1; i <= amountToWin - 1; i++) {
     if (board[y - i]) {
@@ -59,11 +59,11 @@ const getFirstDiagonalPart = (amountToWin: number, cell: CellType, board: Array<
   return removeUndefinedItems(cell, diagonalPartBeforeCell, diagonalPartAfterCell);
 };
 
-const getSecondDiagonalPart = (amountToWin: number, cell: CellType, board: Array<CellType[]>) => {
+const getSecondDiagonalPart = (amountToWin: number, cell: CellData, board: Row[]) => {
   const { x, y } = cell.coordinates;
 
-  const diagonalPartBeforeCell: CellType[] = [];
-  const diagonalPartAfterCell: CellType[] = [];
+  const diagonalPartBeforeCell: Row = [];
+  const diagonalPartAfterCell: Row = [];
 
   for (let i = 1; i <= amountToWin - 1; i++) {
     if (board[y + i]) {
@@ -77,7 +77,7 @@ const getSecondDiagonalPart = (amountToWin: number, cell: CellType, board: Array
   return removeUndefinedItems(cell, diagonalPartBeforeCell, diagonalPartAfterCell);
 };
 
-export const calculateWinner = (amountToWin: number, cell: CellType, board: Array<CellType[]>): boolean => {
+export const calculateWinner = (amountToWin: number, cell: CellData, board: Row[]): boolean => {
   const rowPart = getRowPart(amountToWin, cell, board);
   const columPart = getColumnPart(amountToWin, cell, board);
   const firstDiagonalPart = getFirstDiagonalPart(amountToWin, cell, board);

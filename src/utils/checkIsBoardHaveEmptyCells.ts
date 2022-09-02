@@ -1,6 +1,6 @@
 import { CellValue } from '../const';
-import { CellType } from '../types';
+import { Row } from '../types';
 
-export const checkIsBoardHaveEmptyCells = (board: Array<CellType[]>): boolean => {
-  return board.flat().some((cell) => cell.value === CellValue.Idle);
+export const checkIsBoardHaveEmptyCells = (board: Row[]): boolean => {
+  return board.flat().some((cell) => cell.value === CellValue.IDLE);
 };

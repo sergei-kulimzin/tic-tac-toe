@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import styles from './cell.module.css';
 
 import { CellValue } from '../../const';
-import { CellType } from '../../types';
+import { CellData } from '../../types';
 
 type CellProps = {
   onClickCell: (coordinates: { x: number; y: number }) => void;
-  cell: CellType;
+  cell: CellData;
 };
 
 function Cell(props: CellProps): JSX.Element {
@@ -20,7 +20,7 @@ function Cell(props: CellProps): JSX.Element {
 
   const cellClassnames = classnames(styles.cell, {
     [styles.cellX]: cell.value === CellValue.X,
-    [styles.cellZero]: cell.value === CellValue.Zero,
+    [styles.cellZero]: cell.value === CellValue.ZERO,
   });
 
   return <div className={cellClassnames} onClick={handleClickCell}></div>;

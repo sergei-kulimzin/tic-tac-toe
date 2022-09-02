@@ -1,13 +1,13 @@
 import styles from './gameBoard.module.css';
 
-import { CellType } from '../../types';
+import { Row } from '../../types';
 import { useAppDispatch } from '../../hooks/useStore';
 import { chooseCell } from '../../store/slices/currentGameSlice';
 
 import Cell from '../Cell/Cell';
 
 type GameBoardProps = {
-  board: Array<CellType[]>;
+  board: Row[];
 };
 
 function GameBoard(props: GameBoardProps): JSX.Element {

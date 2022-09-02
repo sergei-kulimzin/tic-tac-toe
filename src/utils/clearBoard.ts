@@ -1,7 +1,7 @@
 import { CellValue } from '../const';
-import { CellType } from '../types';
+import { Row } from '../types';
 
-export const clearBoard = (board: Array<CellType[]>) => {
+export const clearBoard = (board: Row[]) => {
   return board.map((row) => {
     return row.map((cell) => {
       return {
@@ -9,7 +9,7 @@ export const clearBoard = (board: Array<CellType[]>) => {
         coordinates: {
           ...cell.coordinates,
         },
-        value: CellValue.Idle,
+        value: CellValue.IDLE,
       };
     });
   });

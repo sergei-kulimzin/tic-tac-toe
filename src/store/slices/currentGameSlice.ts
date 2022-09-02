@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '..';
 import { CellValue } from '../../const';
-import { CellType } from '../../types';
+import { CellData, Row } from '../../types';
 import { calculateWinner } from '../../utils/calculateWinner';
 import { checkIsBoardHaveEmptyCells } from '../../utils/checkIsBoardHaveEmptyCells';
 import { clearBoard } from '../../utils/clearBoard';
 
 type currentGameState = {
-  board: Array<CellType[]>;
+  board: Row[];
   players: string[];
   amountToWin: number;
   isGameStarted: boolean;
   isFirstPlayerStep: boolean;
-  choosenCell: CellType;
+  choosenCell: CellData;
 };
 
 const initialState: currentGameState = {
@@ -21,36 +21,33 @@ const initialState: currentGameState = {
   amountToWin: 0,
   isGameStarted: false,
   isFirstPlayerStep: false,
-  choosenCell: { coordinates: { x: 0, y: 0 }, value: CellValue.Idle },
+  choosenCell: { coordinates: { x: 0, y: 0 }, value: CellValue.IDLE },
 };
 
 const currentGameSlice = createSlice({
   name: 'currentGame',
   initialState,
   reducers: {
-    startCurrentGame: (
-      state,
-      { payload }: PayloadAction<{ players: string[]; board: Array<CellType[]>; amountToWin: number }>
-    ) => {
+    startCurrentGame: (state, { payload }: PayloadAction<{ players: string[]; board: Row[]; amountToWin: number }>) => {
       state.players = payload.players;
       state.board = payload.board;
       state.amountToWin = payload.amountToWin;
       state.isGameStarted = false;
       state.isFirstPlayerStep = false;
-      state.choosenCell = { coordinates: { x: 0, y: 0 }, value: CellValue.Idle };
+      state.choosenCell = { coordinates: { x: 0, y: 0 }, value: CellValue.IDLE };
     },
     chooseCell: (state, { payload }: PayloadAction<{ x: number; y: number }>) => {
       const { x, y } = payload;
       const { board, isFirstPlayerStep } = state;
 
-      if (board[y][x].value === CellValue.Idle) {
-        const nextBoard: Array<CellType[]> = board.map((row) => {
+      if (board[y][x].value === CellValue.IDLE) {
+        const nextBoard: Row[] = board.map((row) => {
           return row.map((cell) => {
             if (cell.coordinates.x === x && cell.coordinates.y === y) {
               return {
                 ...cell,
                 coordinates: { ...cell.coordinates },
-                value: isFirstPlayerStep ? CellValue.Zero : CellValue.X,
+                value: isFirstPlayerStep ? CellValue.ZERO : CellValue.X,
               };
             }
             return { ...cell, coordinates: { ...cell.coordinates } };
@@ -68,7 +65,7 @@ const currentGameSlice = createSlice({
       state.isGameStarted = false;
       state.board = clearBoard(state.board);
       state.isFirstPlayerStep = false;
-      state.choosenCell = { coordinates: { x: 0, y: 0 }, value: CellValue.Idle };
+      state.choosenCell = { coordinates: { x: 0, y: 0 }, value: CellValue.IDLE };
     },
   },
 });
