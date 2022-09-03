@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import currenGameReducer from './slices/currentGameSlice';
+import gameReducer from './slices/gameSlice';
 
 export const store = configureStore({
   reducer: {
-    currentGame: currenGameReducer,
+    game: gameReducer,
   },
 });
 

@@ -1,4 +1,3 @@
-import { CellValue } from '../const';
 import { CellData, Row } from '../types';
 
 type Ranges = {
@@ -10,10 +9,6 @@ export const checkIsWinCellsAmountReached = (
   gameBoard: Row[],
   choosenCell: CellData
 ): boolean => {
-  if (choosenCell.value === CellValue.IDLE) {
-    return false;
-  }
-
   const { x, y } = choosenCell.coordinates;
 
   const offset = winCellsAmount - 1;

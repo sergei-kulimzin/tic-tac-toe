@@ -4,15 +4,15 @@ import { Navigate, Link } from 'react-router-dom';
 import styles from './resultPage.module.css';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useStore';
-import { resumeGame, selectIsBoardHaveEmptyCells, selectWinner } from '../../store/slices/currentGameSlice';
+import { repeatGame, selectIsBoardHaveEmptyCells, selectWinner } from '../../store/slices/gameSlice';
 
 function ResultPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const isBoardHaveEmptyCells = useAppSelector(selectIsBoardHaveEmptyCells);
   const winner = useAppSelector(selectWinner);
 
-  const handleClickResumeGame: MouseEventHandler<HTMLAnchorElement> = () => {
-    dispatch(resumeGame());
+  const handleClickRepeatGame: MouseEventHandler<HTMLAnchorElement> = () => {
+    dispatch(repeatGame());
   };
 
   if (!winner && isBoardHaveEmptyCells) {
@@ -25,7 +25,7 @@ function ResultPage(): JSX.Element {
         {winner && <h1 className={styles.title}>Игрок: {winner} выиграл!</h1>}
         {!isBoardHaveEmptyCells && <h1 className={styles.title}>Ничья!</h1>}
         <div className='link-wrapper'>
-          <Link className={styles.link} to='/game' onClick={handleClickResumeGame}>
+          <Link className={styles.link} to='/game' onClick={handleClickRepeatGame}>
             Повторить игру
           </Link>
           <Link className={styles.link} to='/'>

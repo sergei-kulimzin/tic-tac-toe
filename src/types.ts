@@ -11,3 +11,10 @@ export type CellData = {
 };
 
 export type Row = CellData[];
+
+export type FormInputs = {
+  player1: string;
+  player2: string;
+  gameBoardSize: number;
+  winCellsAmount: number;
+};

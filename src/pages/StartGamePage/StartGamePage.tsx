@@ -4,15 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import styles from './startGamePage.module.css';
 
 import { useAppDispatch } from '../../hooks/useStore';
-import { startCurrentGame } from '../../store/slices/currentGameSlice';
-import { createBoardBySize } from '../../utils/createBoardBySize';
-
-type FormInputs = {
-  player1: string;
-  player2: string;
-  gameBoardSize: number;
-  winCellsAmount: number;
-};
+import { startNewgame } from '../../store/slices/gameSlice';
+import { FormInputs } from '../../types';
 
 function StartGamePage(): JSX.Element {
   const navigate = useNavigate();
@@ -27,14 +20,7 @@ function StartGamePage(): JSX.Element {
   });
 
   const submitHandler: SubmitHandler<FormInputs> = (formData) => {
-    const { player1, player2, gameBoardSize, winCellsAmount } = formData;
-    dispatch(
-      startCurrentGame({
-        players: [player1, player2],
-        board: createBoardBySize(gameBoardSize),
-        amountToWin: winCellsAmount,
-      })
-    );
+    dispatch(startNewgame(formData));
     navigate('/game');
   };
 
