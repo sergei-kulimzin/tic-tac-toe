@@ -1,5 +1,5 @@
-import { ChangeEventHandler, FocusEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import styles from './startGamePage.module.css';
 
@@ -7,88 +7,99 @@ import { useAppDispatch } from '../../hooks/useStore';
 import { startCurrentGame } from '../../store/slices/currentGameSlice';
 import { createBoardBySize } from '../../utils/createBoardBySize';
 
-function StartGamePage(): JSX.Element {
-  const [formData, setFormData] = useState({ player1: '', player2: '', boardSize: 3, amountToWin: 3 });
+type FormInputs = {
+  player1: string;
+  player2: string;
+  gameBoardSize: number;
+  winCellsAmount: number;
+};
 
+function StartGamePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const { target } = event;
+  const { register, handleSubmit, getValues } = useForm<FormInputs>({
+    mode: 'onTouched',
+    defaultValues: {
+      gameBoardSize: 3,
+      winCellsAmount: 3,
+    },
+  });
 
-    setFormData((prevState) => ({ ...prevState, [target.name]: target.value }));
-  };
-
-  const handleBlurInput: FocusEventHandler<HTMLInputElement> = (event) => {
-    const { target } = event;
-
-    if (target.type === 'number' && +target.value < 3) {
-      setFormData((prevState) => ({ ...prevState, [target.name]: 3 }));
-    }
-
-    if (target.name === 'boardSize' && +target.value < +formData.amountToWin) {
-      setFormData((prevState) => ({ ...prevState, [target.name]: prevState.amountToWin }));
-    }
-  };
-
-  const handleStartCurrentGame: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    const players = [formData.player1, formData.player2];
-    const board = createBoardBySize(+formData.boardSize);
-    dispatch(startCurrentGame({ players, board, amountToWin: +formData.amountToWin }));
-    event.currentTarget.reset();
+  const submitHandler: SubmitHandler<FormInputs> = (formData) => {
+    const { player1, player2, gameBoardSize, winCellsAmount } = formData;
+    dispatch(
+      startCurrentGame({
+        players: [player1, player2],
+        board: createBoardBySize(gameBoardSize),
+        amountToWin: winCellsAmount,
+      })
+    );
     navigate('/game');
   };
 
   return (
     <div className={styles.startGamePage}>
       <div className='container'>
-        <h1 className={styles.title}>НОВАЯ ИГРА</h1>
-        <form className={styles.playersForm} onSubmit={handleStartCurrentGame}>
+        <h1 className={styles.title}>Крестики - Нолики</h1>
+        <form className={styles.playersForm} onSubmit={handleSubmit(submitHandler)}>
           <input
             className={styles.inputPlayer}
             type='text'
-            name='player1'
-            id='inputPlayer1'
             placeholder='Имя первого игрока..'
-            required
-            onChange={handleChangeInput}
-            value={formData.player1}
+            {...register('player1', {
+              validate: {
+                isNotEmpty: (value) => value.trim() !== '' || 'Введите имя игрока',
+                isNotSame: (value) =>
+                  value.toLowerCase() !== getValues('player2').toLowerCase() || 'Одинаковые имена игроков',
+              },
+            })}
           />
+
           <input
             className={styles.inputPlayer}
             type='text'
-            name='player2'
-            id='inputPlayer2'
             placeholder='Имя второго игрока..'
-            required
-            onChange={handleChangeInput}
-            value={formData.player2}
+            {...register('player2', {
+              validate: {
+                isNotEmpty: (value) => value.trim() !== '' || 'Введите имя игрока',
+                isNotSame: (value) =>
+                  value.toLowerCase() !== getValues('player1').toLowerCase() || 'Одинаковые имена игроков',
+              },
+            })}
           />
+
           <div className={styles.inputNumbers}>
-            <label htmlFor=''>Размер поля</label>
+            <label htmlFor='gameBoardSize'>Размер игровой доски</label>
             <input
               className={styles.inputNumber}
               type='number'
-              name='boardSize'
-              required
-              onChange={handleChangeInput}
-              onBlur={handleBlurInput}
-              value={formData.boardSize}
+              id='gameBoardSize'
+              {...register('gameBoardSize', {
+                validate: {
+                  isNotLessThanThree: (value) => value >= 3 || 'Должно быть не меньше 3',
+                  isNotLessThanWinCellsAmount: (value) =>
+                    value >= getValues('winCellsAmount') || 'Не должно быть меньше количества ячеек для победы',
+                },
+              })}
             />
-            <label htmlFor=''>Количество ячеек для победы</label>
+
+            <label htmlFor='winCellsAmount'>Количество ячеек для победы</label>
             <input
               className={styles.inputNumber}
               type='number'
-              name='amountToWin'
-              required
-              onChange={handleChangeInput}
-              onBlur={handleBlurInput}
-              value={formData.amountToWin}
+              id='winCellsAmount'
+              {...register('winCellsAmount', {
+                validate: {
+                  isNotLessThanThree: (value) => value >= 3 || 'Должно быть не меньше 3',
+                  isNotGreaterThanGameBoardSize: (value) =>
+                    value <= getValues('gameBoardSize') || 'Не должно быть больше размера игровой доски',
+                },
+              })}
             />
           </div>
           <button className={styles.submitButton} type='submit'>
-            НАЧАТЬ
+            НАЧАТЬ ИГРУ
           </button>
         </form>
       </div>
