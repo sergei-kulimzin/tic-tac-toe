@@ -1,56 +1,62 @@
-.startGamePage {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .title {
-  margin: var(--gap-lg);
+  margin: var(--gap-lg) 0;
   text-align: center;
   color: var(--primary);
 }
 
-.playersForm {
+.form {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.inputWrapper {
+  position: relative;
   margin: var(--gap-lg) 0;
-  display: flex;
-  flex-direction: column;
 }
 
-.inputPlayer {
-  margin-bottom: var(--gap-sm);
-  padding: var(--gap-sm);
+.inputWrapperError input {
+  outline-color: var(--error);
 }
 
-.inputNumbers {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.inputWrapperError .label {
+  color: var(--error);
 }
 
-.inputNumber {
-  width: 50%;
-  margin-bottom: var(--gap-sm);
-  padding: calc(var(--gap-sm) / 2);
-  text-align: center;
-
+.label {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  padding: 0 calc(var(--gap-sm) / 2);
+  background-color: var(--light);
+  font-weight: 700;
+  color: var(--dark);
 }
 
-.submitButton {
-  padding: var(--gap-sm) var(--gap-lg);
-  border: none;
-  border-radius: var(--radius);
-  background-color: var(--accent);
+input:focus + .label,
+input:active + .label {
+  color: var(--accent);
+}
+
+.inputWrapperError input:focus + .label,
+.inputWrapperError input:active + .label {
+  color: var(--error);
+}
+
+.errorMessage {
+  display: block;
+  padding-top: 5px;
+  color: var(--error);
+}
+
+.button {
+  display: block;
+  margin: 0 auto;
+  background-color: var(--primary);
+  font-weight: 700;
   color: var(--light);
+  transition: background-color 250ms ease-in;
 }
 
-@media screen and (max-width: 600px) {
-  .checkboxContainer {
-    flex-direction: column;
-  }
-  .checkboxLabel:first-of-type {
-    margin-right: 0;
-    margin-bottom: var(--gap-sm);
-  }
+.button:hover {
+  background-color: var(--accent);
 }
